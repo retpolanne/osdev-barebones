@@ -53,3 +53,4 @@ dkms.conf
 
 # Temp files
 hack/tmp/
+bin/

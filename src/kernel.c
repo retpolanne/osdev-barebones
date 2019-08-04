@@ -104,12 +104,12 @@ void terminal_writestring(const char* data) {
 }
 
 void terminal_writeline(const char* data) {
-	char* line = data;	
-	line[strlen(data)] = "\n";
+	char* line = (char*) data;
+	line[strlen(data)] = '\n';
 	terminal_write(data, strlen(line));
 }
 
 void kernel_main(void) {
 	terminal_initialize();
-	terminal_writeline("Hello, Kernel World!")
+	terminal_writeline("Hello, Kernel World!");
 }
