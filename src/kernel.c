@@ -83,14 +83,21 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
+void newline() {
+	terminal_column = 0;
+	if (++terminal_row == VGA_HEIGHT)
+		terminal_row = 0;
+}
+
 void terminal_putchar(char c) {
-	terminal_putentryat(
-		c, terminal_color, terminal_column, terminal_row
-	);
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+	if (c == '\n') {
+		newline();
+	}
+	else {
+		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+		if (++terminal_column == VGA_WIDTH) {
+			newline();
+		}
 	}
 }
 
@@ -106,10 +113,12 @@ void terminal_writestring(const char* data) {
 void terminal_writeline(const char* data) {
 	char* line = (char*) data;
 	line[strlen(data)] = '\n';
-	terminal_write(data, strlen(line));
+	terminal_write(line, strlen(line));
 }
 
 void kernel_main(void) {
 	terminal_initialize();
 	terminal_writeline("Hello, Kernel World!");
+	terminal_writeline("You must be new here!");
+	terminal_writeline("Tell me a joke!");
 }
